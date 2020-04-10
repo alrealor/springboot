@@ -1,0 +1,89 @@
+----------------
+* SpringBoot   |
+----------------
+- Goals:  
+    > Enable building production ready applications quickly
+    > Provide common nono-functional features:
+        - Embedded servers
+        - Metrics
+        - Healt checks
+        - Externalized confifuration
+- IS NOT:
+    > Zero code generator
+    > Neither an application server nor web server
+    
+    
+* SpringBoot vs Spring MVC
+---------------------------
+- What is the core problem that Spring Framework solves?
+    R: Dependency Injection or IoC Inversion of Control
+- What is the core problem that Spring MVC Framework solves?
+    R: Dispatcher Servlet, ModelandView and ViewResolver
+- What do we need SPRINGBOOT?
+    R: To CONFIGURE AUTOMATICALLY the features of Spring Frameworks adding this frameworks to the CLASSPATH as jars
+
+
+* Initialize a SpringBoot project using SPRING INITIALIZR
+----------------------------------------------------------
+- start.spring.io
+- Components used: Srpng web, Devtools, JPA, H2
+
+
+* SpringBoot Project
+------------------------
+- @SpringBootApplication	-> Initalizes Spring (Component Scan) and SpringBoot (Auto Configuration)
+- SpringApplication.run()	-> Launches a SpringBoot Application
+
+
+* SpringBoot STARTERS
+----------------------
+- Dependencies SpringBoot uses to start and auto-configure features like spring-webmvc, spring-jdbc, etc.
+
+- Some Important Starters:
+	> spring-boot-starter-parent		-> Contains version of dependencies and default java version
+    > spring-boot-starter-web-services  -> SOAP web service
+    > spring-boot-starter-web           -> Web (Including Application servers) and RESTful application
+    > spring-boot-starter-test          -> Unit testing and integration testing
+    > spring-boot-starter-hateoas       -> For hateos use
+    > spring-boot-starter-jdbc          -> Traditional JDBC
+    > spring-boot-starter-security      -> Authentication and Authorization using Spring Secutiry
+    > spring-boot-starter-data-jpa      -> sprinf data JPA with Hibernate
+    > spring-boot-starter-cache         -> Enabling Spring Framework's caching support
+    > spring-boot-starter-data-rest     -> Expose simple REST Service using Spring Data REST
+    
+  
+* SpringBoot Controller
+------------------------
+@Controller
+public class LoginController {
+    @RequestMapping("/login")
+    @ResponseBody
+    public String loginMessage(){
+        return "Hello World!";
+    }
+}
+- @Controller       -> Annotation to tells SpringBoot this is a Controller component    
+- @RequestMapping   -> Annotation for an incomming request 
+- @ResponseBody     -> The response output is in th body
+
+
+* SpringBoot View Resolver
+---------------------------
+- login.jsp -> /src/main/webapp/WEB-INF/jsp/login.jsp
+
+- application.properties
+
+    # Configuration for View Resolver
+    spring.mvc.view.prefix=/WEB-INF/jsp/
+    spring.mvc.view.suffix=.jsp
+    logging.level=DEBUG    
+    
+- Dependency for Spring MVC View Resolver 
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-jasper</artifactId>
+        <scope>provided</scope>
+    </dependency>  
+
+    
+		
