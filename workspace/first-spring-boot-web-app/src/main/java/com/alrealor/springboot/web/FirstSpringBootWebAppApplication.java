@@ -1,4 +1,4 @@
-package com.alrealor.springboot.web.firstspringbootwebapp;
+package com.alrealor.springboot.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

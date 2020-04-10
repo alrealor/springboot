@@ -85,5 +85,21 @@ public class LoginController {
         <scope>provided</scope>
     </dependency>  
 
+
+	
+Spring Annotations for Dependency Injection
+--------------------------------------------
+- Components to create an Spring Bean
+	@Component	-> Commonly used for any type of Bean
+	@Controller	-> Used for controller interaction for MVC
+	@Repository	-> Commonly used for DB operations working with JDBC, JPA, Hiberante
+	@Service	-> Commonly used for a helper service
+	
+- Inject the bean into a lass
+	@Autowired
+	
+- Scan packages to be treated by Dependency Injection		
+	@ComponentScan
+
     
 		
