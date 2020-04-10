@@ -87,7 +87,7 @@ public class LoginController {
 
 
 	
-Spring Annotations for Dependency Injection
+* Spring Annotations for Dependency Injection
 --------------------------------------------
 - Components to create an Spring Bean
 	@Component	-> Commonly used for any type of Bean
@@ -99,7 +99,20 @@ Spring Annotations for Dependency Injection
 	@Autowired
 	
 - Scan packages to be treated by Dependency Injection		
-	@ComponentScan
+	@ComponentScan("<PACKAGE_URL>")
+	
+- Keep the attributes through the session
+	@SessionAttributes("<ATTRIBUTES_NAME>")
+	
+	
+	
+SpringBoot Autocondiguration for WEBJARS
+--------------------------------------------
+- Static content exisitng in a jar
+	example: bootstrap, jquery frameworks
+		<link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+		<script src="webjars/jquery/1.9.1/jquery.min.js"></script>
+	    <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     
 		
