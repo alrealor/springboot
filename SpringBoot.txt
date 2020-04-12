@@ -88,7 +88,7 @@ public class LoginController {
 
 	
 * Spring Annotations for Dependency Injection
---------------------------------------------
+----------------------------------------------
 - Components to create an Spring Bean
 	@Component	-> Commonly used for any type of Bean
 	@Controller	-> Used for controller interaction for MVC
@@ -107,12 +107,32 @@ public class LoginController {
 	
 	
 SpringBoot Autocondiguration for WEBJARS
---------------------------------------------
+----------------------------------------------
 - Static content exisitng in a jar
 	example: bootstrap, jquery frameworks
 		<link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 		<script src="webjars/jquery/1.9.1/jquery.min.js"></script>
 	    <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        
+        
+        
+Java Validation API
+----------------------------------------------
+- @Valid        -> Annotation for controller side to enable validation
+                    @RequestMapping(value="/add-todo", method=RequestMethod.POST)
+                    public String addTodo(ModelMap model, @Valid Todo todo, BindingResult results){
+                    
+- BindingResult -> Object with the result of validations in controller
+                    @RequestMapping(value="/add-todo", method=RequestMethod.POST)
+                    public String addTodo(ModelMap model, @Valid Todo todo, BindingResult results){
+
+- @Size         -> Validateion Annotation to set a size for field ie
+                       @Size(min = 10, message = "Enter at least 10 characters")
+                       private String description;
+                       
+- <form:error>  -> Tag to show the message associated with the validations     
+                       <form:errors path="description" cssClass="text-warning" />
+                        
 
     
 		

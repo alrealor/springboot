@@ -1,3 +1,5 @@
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <html>
 	<head>
 		<link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -10,16 +12,23 @@
 		<script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	
 		<div class="container">
-			<h1>Todo for ${user}</h1>		
-			<form method="post">
-				<fieldset class="form-group">
-					<label>Description:</label>
-					<input type="text" name="description" 
-					       class="form-control" required="required"/>
+		
+			<h1>Todo for ${user}</h1>	
+				
+			<form:form method="post" modelAttribute="todo">
+				<!-- We need to Map the todo.id in order to it is passed to the controller -->
+				<form:hidden path="id"/>
+				
+				<fieldset class="form-group">				    
+					<form:label path="description">Description:</form:label>
+					<form:input path="description" type="text"
+					            class="form-control" required="required"/>
+					<form:errors path="description" cssClass="text-warning" />
 				</fieldset>
 				 
 				<button type="submit" class="btn btn-success">Add</button>
-			</form>
+			</form:form>
+			
 		</div>
 	</body>
 </html>
