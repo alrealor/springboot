@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class Todo {
     private int id;
     private String user;
@@ -11,7 +13,9 @@ public class Todo {
     @Size(min = 10, message = "Enter at least 10 characters")
     private String description;
     
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate targetDate;
+    
     private boolean isDone;
     
     public Todo() {

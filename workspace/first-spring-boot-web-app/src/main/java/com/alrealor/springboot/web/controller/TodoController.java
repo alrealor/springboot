@@ -1,14 +1,19 @@
 package com.alrealor.springboot.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +28,15 @@ public class TodoController {
 	
 	@Autowired
 	TodoService todoService;
+		
+	/*
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		binder.registerCustomEditor(LocalDate.class,)
+	}
+	*/
+	
 	
 	// List Todos controller
     @RequestMapping(value="/list-todos", method=RequestMethod.GET)
@@ -47,7 +61,7 @@ public class TodoController {
     	
     	// this Todo object will be binded to modelAttribute="todo" in JSP
     	// .put or .addAttribute methods add to the model
-    	model.addAttribute("todo", new Todo(1, model.get("user").toString(), "", LocalDate.now(), false));
+    	model.addAttribute("todo", new Todo(1, model.get("user").toString(), "", null, false));
     	
         return "todo";
     }
@@ -69,7 +83,7 @@ public class TodoController {
     	String user = model.get("user").toString();
     	
     	//Add todo using todo service
-    	todoService.addTodo(user, todo.getDescription(), LocalDate.now(), false);
+    	todoService.addTodo(user, todo.getDescription(), todo.getTargetDate(), false);
     	
     	// Redirect to list-todo page
         return "redirect:/list-todos";
