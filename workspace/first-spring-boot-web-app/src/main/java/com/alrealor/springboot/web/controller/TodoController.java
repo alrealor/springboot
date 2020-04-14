@@ -1,55 +1,67 @@
 package com.alrealor.springboot.web.controller;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.alrealor.springboot.web.model.Todo;
+import com.alrealor.springboot.web.service.ActiveNavigationItemService;
 import com.alrealor.springboot.web.service.TodoService;
 
 @Controller
-@SessionAttributes("user")
 public class TodoController {
 	
 	@Autowired
 	TodoService todoService;
-		
-	/*
+	
+	@Autowired
+	ActiveNavigationItemService activeNavService;
+
+	/* Better use @DateTimeFormat(pattern = "dd/MM/yyyy") in Todo bean
 	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		binder.registerCustomEditor(LocalDate.class,)
-	}
-	*/
+	protected void initBinder(WebDataBinder binder) {
+	  binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+	    @Override
+	    public void setAsText(String text) throws IllegalArgumentException{
+	      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+	    }
+	    @Override
+	    public String getAsText() throws IllegalArgumentException {
+	      return DateTimeFormatter.ofPattern("dd/MM/yyyy").format((LocalDate) getValue());
+	    }
+	  });
+	}*/
 	
-	
-	// List Todos controller
+		
+	/** 
+	 * Show list of Todos controller
+	 * @param model
+	 * @return
+	 */
     @RequestMapping(value="/list-todos", method=RequestMethod.GET)
     public String showTodos(ModelMap model){ 
     	
-    	String user = (String) model.get("user");
+    	String user = this.getLoggedInUserName();
     	
     	List <Todo> todos = todoService.retrieveTodos(user);
     	
     	model.put("todos", todos);
+    	activeNavService.setActiveNavigationItem(model, "list-todos");
     	
         return "list-todos";
     }
+
+
         
 	/**
 	 *  Show Add Todo Page
@@ -61,7 +73,7 @@ public class TodoController {
     	
     	// this Todo object will be binded to modelAttribute="todo" in JSP
     	// .put or .addAttribute methods add to the model
-    	model.addAttribute("todo", new Todo(1, model.get("user").toString(), "", null, false));
+    	model.addAttribute("todo", new Todo(1, model.get("user").toString(), "", null, false));    	
     	
         return "todo";
     }
@@ -80,7 +92,7 @@ public class TodoController {
     		return "todo";
     	}
     	
-    	String user = model.get("user").toString();
+    	String user = this.getLoggedInUserName();
     	
     	//Add todo using todo service
     	todoService.addTodo(user, todo.getDescription(), todo.getTargetDate(), false);
@@ -127,13 +139,21 @@ public class TodoController {
     		return "todo";
     	}
 
-    	todo.setUser(model.get("user").toString());
+    	todo.setUser(this.getLoggedInUserName());
     	
     	// Update Todo from service
     	todoService.updateTodo(todo);
 
         return "redirect:/list-todos";
-    }      
+    }
     
-    
+	private String getLoggedInUserName() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if(principal instanceof UserDetails) {
+			return ((UserDetails)principal).getUsername();
+		}
+		return principal.toString();
+	}    
+       
 }

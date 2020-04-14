@@ -106,7 +106,7 @@ public class LoginController {
 	
 	
 	
-SpringBoot Autocondiguration for WEBJARS
+* SpringBoot Autocondiguration for WEBJARS
 ----------------------------------------------
 - Static content exisitng in a jar
 	example: bootstrap, jquery frameworks
@@ -116,7 +116,7 @@ SpringBoot Autocondiguration for WEBJARS
         
         
         
-Java Validation API
+* Java Validation API
 ----------------------------------------------
 - @Valid        -> Annotation for controller side to enable validation
                     @RequestMapping(value="/add-todo", method=RequestMethod.POST)
@@ -132,6 +132,62 @@ Java Validation API
                        
 - <form:error>  -> Tag to show the message associated with the validations     
                        <form:errors path="description" cssClass="text-warning" />
+					   
+					   
+					   
+* Spring Security functionality
+----------------------------------------------
+- Add starter dependency
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId>
+	</dependency>
+	
+- Class WebSecurityConfigurerAdapter has the security configuration
+	so I can extends from this class and override to get my own configuration methods:
+	
+	@Configuration
+	public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+		@Autowired
+		public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+			auth.inMemoryAuthentication().withUser("usuario").password("{noop}qwe").roles("USER", "ADMIN");
+		}	
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			
+			http.authorizeRequests()
+				.antMatchers("/login").permitAll() // When login page is requested -> allow anybody
+				.antMatchers("/", "/*todo*/**").access("hasRole('USER')").and() // When root or some other page that contains "todo" -> check that credentials has a USER role
+				.formLogin();			
+		}	
+	}
+	
+- Class UserDetails stores user details information
+	
+- Class SecurityContextHolder is the context for Spring security
+
+- Get credentials logged in from Spring Security 
+	private String getLoggedInUserName() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		if(principal instanceof UserDetails) {
+			return ((UserDetails)principal).getUsername()
+		}
+		return principal.toString();
+	}
+	
+- Make a logout controller method
+    @RequestMapping(value="/logout", method=RequestMethod.GET)
+    public String showWelcomePage(HttpServletRequest  request, HttpServletResponse response){ 
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();    
+    	if(auth != null) {
+    		new SecurityContextLogoutHandler().logout(request, response, auth);
+    	}    	
+    	return "redirect:/";      
+    }	
+	
+
+	
+				   
                         
 
     

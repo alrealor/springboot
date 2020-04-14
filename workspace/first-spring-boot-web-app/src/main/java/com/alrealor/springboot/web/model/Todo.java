@@ -13,7 +13,7 @@ public class Todo {
     @Size(min = 10, message = "Enter at least 10 characters")
     private String description;
     
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate targetDate;
     
     private boolean isDone;
