@@ -15,16 +15,16 @@ public class ActiveNavigationItemService {
     	
     	switch(pageSource) {
     		case "login": 
-    				model.put("activeNavItem", "homeItem");
+    				model.put("activeNavItem", "homeMenuItem");
     				break;
     		case "list-todos": 
-    				model.put("activeNavItem", "todosItem"); 
+    				model.put("activeNavItem", "todosMenuItem"); 
     				break;
     		case "welcome": 
-				model.put("activeNavItem", "homeItem"); 
+				model.put("activeNavItem", "homeMenuItem"); 
 				break;    				
     		default: 
-    				model.put("activeNavItem", "homeItem");
+    				model.put("activeNavItem", "homeMenuItem");
     	}
     }
 

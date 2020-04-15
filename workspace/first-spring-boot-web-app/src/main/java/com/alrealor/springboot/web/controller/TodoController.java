@@ -105,9 +105,13 @@ public class TodoController {
      *  Delete todo controller logic
      * @param id
      * @return
+     * @throws Exception 
      */
     @RequestMapping(value="/delete-todo", method=RequestMethod.GET)
-    public String deleteTodo(@RequestParam int id){    	
+    public String deleteTodo(@RequestParam int id) throws Exception{   
+    	if(id == 1) {
+    		throw new Exception("Dummy Custom Exception");
+    	}
     	todoService.deleteTodo(id);
         return "redirect:/list-todos";
     }

@@ -153,8 +153,7 @@ public class LoginController {
 			auth.inMemoryAuthentication().withUser("usuario").password("{noop}qwe").roles("USER", "ADMIN");
 		}	
 		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			
+		protected void configure(HttpSecurity http) throws Exception {			
 			http.authorizeRequests()
 				.antMatchers("/login").permitAll() // When login page is requested -> allow anybody
 				.antMatchers("/", "/*todo*/**").access("hasRole('USER')").and() // When root or some other page that contains "todo" -> check that credentials has a USER role
@@ -182,9 +181,25 @@ public class LoginController {
     	if(auth != null) {
     		new SecurityContextLogoutHandler().logout(request, response, auth);
     	}    	
-    	return "redirect:/";      
+    	return "redirect:/";           
     }	
 	
+    
+    
+* Exception Handling
+---------------------------------------------- 
+- Error controller have a method annotated as @ExceptionHandler(Exception.class)
+    @Controller("error")
+    public class ErrorController {        
+        @ExceptionHandler(Exception.class)
+        public ModelAndView handleException(HttpServletRequest request, HttpServletResponse response, Exception exception) {
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("exception", exception);
+            mv.addObject("url", request.getRequestURI());
+            mv.setViewName("error"); // error.jsp
+            return mv;
+        }
+    }   
 
 	
 				   
